@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tera Losa Pharmacy
+
+Production website foundation for Tera Losa Pharmacy. The app uses Next.js App
+Router, TypeScript, Tailwind CSS, ESLint, and a Supabase backend foundation.
+
+Current backend status:
+- Supabase clients and schema files are prepared.
+- Public forms are UI-only and do not submit yet.
+- Admin routes are placeholders.
+- Authentication is not implemented yet.
+- Email, fax, and upload workflows are not implemented yet.
 
 ## Getting Started
 
-First, run the development server:
+Install dependencies and run the development server:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create `.env.local` with:
 
-## Learn More
+```bash
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+```
 
-To learn more about Next.js, take a look at the following resources:
+Important:
+- `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` are browser-safe.
+- `SUPABASE_SERVICE_ROLE_KEY` is server-only. Never expose it to client components
+  or browser code.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Supabase Setup
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Run the schema in:
 
-## Deploy on Vercel
+```text
+supabase/schema.sql
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+That SQL creates:
+- `pharmacy_settings`
+- `business_hours`
+- `services`
+- `refill_requests`
+- `transfer_requests`
+- `contact_messages`
+- `request_files`
+- `admin_profiles`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+It also enables RLS, creates basic public insert policies for future request
+forms, prepares authenticated admin policies, and inserts placeholder seed data.
+
+Storage setup notes are in:
+
+```text
+supabase/storage.md
+```
+
+Create a private bucket named `prescription-uploads` for future JPG, JPEG, PNG,
+and PDF prescription uploads. The bucket should not be public.
+
+## Validation
+
+```bash
+npm run lint
+npm run build
+```
