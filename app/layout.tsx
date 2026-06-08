@@ -15,17 +15,17 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://terralosapharmacy.ca"),
   title: {
-    default: "Tera Losa Pharmacy",
-    template: "%s | Tera Losa Pharmacy",
+    default: "Terra Losa Pharmacy",
+    template: "%s | Terra Losa Pharmacy",
   },
   description:
-    "A calm, local pharmacy experience for prescriptions, refills, transfers, and patient care in Tera Losa.",
-  applicationName: "Tera Losa Pharmacy",
+    "A calm, local pharmacy experience for prescriptions, refills, and patient care in Terra Losa.",
+  applicationName: "Terra Losa Pharmacy",
   openGraph: {
-    title: "Tera Losa Pharmacy",
+    title: "Terra Losa Pharmacy",
     description:
-      "Local pharmacy care for prescriptions, refills, transfers, and everyday health needs.",
-    siteName: "Tera Losa Pharmacy",
+      "Local pharmacy care for prescriptions, refills, and everyday health needs.",
+    siteName: "Terra Losa Pharmacy",
     type: "website",
   },
 };

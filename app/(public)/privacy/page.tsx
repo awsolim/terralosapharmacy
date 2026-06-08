@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/ui/page-header";
 import { Badge } from "@/components/ui/badge";
+import { getPublicContent, textOrFallback } from "@/lib/content";
 
 const privacyNotes = [
   "Website forms are intended for pharmacy-related requests only.",
@@ -11,17 +12,26 @@ const privacyNotes = [
   "This page is a plain-language intake notice, not a final legal privacy policy.",
 ];
 
-export default function PrivacyPage() {
+export default async function PrivacyPage() {
+  const content = await getPublicContent();
+  const page = content.pages.get("privacy");
+
   return (
     <div className="mx-auto w-full max-w-[88rem] px-5 py-12 sm:px-6 sm:py-16 lg:px-8">
       <PageHeader
         eyebrow="Privacy"
-        title="Website intake and privacy notice."
-        subtitle="A simple notice for the current website foundation. A final legal privacy policy should be reviewed before launch."
+        title={textOrFallback(page?.title, "Website intake and privacy notice.")}
+        subtitle={textOrFallback(
+          page?.subtitle,
+          "A simple notice for the current website foundation. A final legal privacy policy should be reviewed before launch.",
+        )}
       />
 
       <Card padding="lg">
         <Badge variant="neutral">Draft notice</Badge>
+        {page?.body ? (
+          <p className="mt-6 text-base leading-8 text-muted">{page.body}</p>
+        ) : null}
         <div className="mt-6 grid gap-4 md:grid-cols-2">
           {privacyNotes.map((note) => (
             <div

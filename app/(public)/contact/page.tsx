@@ -36,7 +36,7 @@ export default function ContactPage() {
           <Card className="overflow-hidden p-0" padding="none">
             <div className="relative h-80 bg-[#f7f4ec] sm:h-96 lg:h-[22rem]">
               <Image
-                alt="Tera Losa Pharmacy storefront"
+                alt="Terra Losa Pharmacy storefront"
                 className="object-contain"
                 fill
                 sizes="(min-width: 1024px) 24rem, 100vw"
@@ -82,7 +82,7 @@ export default function ContactPage() {
               Follow us
             </h2>
             <p className="mt-3 text-sm leading-7 text-muted">
-              Follow Tera Losa Pharmacy on Facebook for pharmacy updates and
+              Follow Terra Losa Pharmacy on Facebook for pharmacy updates and
               community news.
             </p>
             <a

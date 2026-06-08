@@ -57,7 +57,7 @@ create table if not exists public.business_hours (
   display_order integer not null,
   updated_at timestamptz not null default now(),
   constraint business_hours_day_check check (
-    day_of_week in ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')
+    lower(day_of_week) in ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')
   ),
   constraint business_hours_display_order_check check (display_order between 1 and 7)
 );
@@ -96,7 +96,7 @@ create table if not exists public.refill_requests (
     fulfillment_preference in ('pickup', 'delivery', 'not_sure')
   ),
   constraint refill_status_check check (
-    status in ('new', 'in_review', 'completed', 'archived')
+    status in ('new', 'in_review', 'waiting_for_patient', 'completed', 'archived')
   ),
   constraint refill_consent_required_check check (consent_given is true)
 );
@@ -142,8 +142,29 @@ create table if not exists public.contact_messages (
     reason in ('general_question', 'prescription_question', 'delivery_question', 'hours_location', 'other')
   ),
   constraint contact_status_check check (
-    status in ('new', 'in_review', 'completed', 'archived')
+    status in ('new', 'read', 'archived')
   )
+);
+
+alter table public.business_hours
+drop constraint if exists business_hours_day_check;
+alter table public.business_hours
+add constraint business_hours_day_check check (
+  lower(day_of_week) in ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')
+);
+
+alter table public.refill_requests
+drop constraint if exists refill_status_check;
+alter table public.refill_requests
+add constraint refill_status_check check (
+  status in ('new', 'in_review', 'waiting_for_patient', 'completed', 'archived')
+);
+
+alter table public.contact_messages
+drop constraint if exists contact_status_check;
+alter table public.contact_messages
+add constraint contact_status_check check (
+  status in ('new', 'read', 'archived')
 );
 
 create table if not exists public.request_files (
@@ -336,7 +357,7 @@ values
   ('wednesday', '09:00', '18:00', false, 3),
   ('thursday', '09:00', '18:00', false, 4),
   ('friday', '09:00', '18:00', false, 5),
-  ('saturday', null, null, true, 6),
+  ('saturday', '10:00', '15:00', false, 6),
   ('sunday', null, null, true, 7)
 on conflict do nothing;
 
@@ -351,7 +372,6 @@ insert into public.services (
   is_active
 ) values
   ('Prescription refills', 'prescription-refills', 'Request refills and the team will review the details.', null, 'pill', true, 1, true),
-  ('Prescription transfers', 'prescription-transfers', 'Ask us to help move prescriptions from another pharmacy.', null, 'repeat', true, 2, true),
   ('Medication reviews', 'medication-reviews', 'Book time to review medications and ask practical questions.', null, 'clipboard-list', true, 3, true),
   ('Blister packaging', 'blister-packaging', 'Ask about packaging options that make doses easier to manage.', null, 'package', false, 4, true),
   ('Delivery', 'delivery', 'Ask us about delivery availability for your area.', null, 'truck', false, 5, true),
@@ -361,3 +381,7 @@ insert into public.services (
   ('Blood pressure checks', 'blood-pressure-checks', 'Ask about in-pharmacy blood pressure support.', null, 'heart-pulse', false, 9, true),
   ('Over-the-counter guidance', 'over-the-counter-guidance', 'Clear help choosing non-prescription products safely.', null, 'shopping-bag', false, 10, true)
 on conflict (slug) do nothing;
+
+update public.services
+set is_active = false, is_featured = false
+where slug = 'prescription-transfers';

@@ -1,19 +1,29 @@
 import type { HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
-export type Status = "new" | "in_review" | "completed" | "archived";
+export type Status =
+  | "new"
+  | "in_review"
+  | "waiting_for_patient"
+  | "completed"
+  | "read"
+  | "archived";
 
 const statusStyles: Record<Status, string> = {
   new: "bg-blue-gray text-[#285c73] ring-[#bdd4df]",
   in_review: "bg-[#fff4dd] text-[#7a5520] ring-[#ead4a9]",
+  waiting_for_patient: "bg-[#fff7df] text-[#76551a] ring-[#ead4a9]",
   completed: "bg-primary-soft text-primary ring-[#bfd8ce]",
+  read: "bg-primary-soft text-primary ring-[#bfd8ce]",
   archived: "bg-[#eeeeea] text-muted ring-border",
 };
 
 const statusLabels: Record<Status, string> = {
   new: "New",
   in_review: "In review",
+  waiting_for_patient: "Waiting for patient",
   completed: "Completed",
+  read: "Read",
   archived: "Archived",
 };
 

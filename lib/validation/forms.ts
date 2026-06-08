@@ -53,24 +53,6 @@ export const refillRequestSchema = z.object({
   website: optionalText,
 });
 
-export const transferRequestSchema = z.object({
-  first_name: requiredText("First name is required."),
-  last_name: requiredText("Last name is required."),
-  date_of_birth: requiredText("Date of birth is required."),
-  phone: requiredText("Phone number is required."),
-  email: optionalEmail,
-  current_pharmacy_name: requiredText("Current pharmacy name is required."),
-  current_pharmacy_phone: optionalText,
-  current_pharmacy_fax: optionalText,
-  medication_names: optionalText,
-  fulfillment_preference: fulfillmentPreferenceSchema.default("not_sure"),
-  notes: optionalText,
-  consent_given: z.literal(true, {
-    error: "Consent is required before sending this request.",
-  }),
-  website: optionalText,
-});
-
 export const contactMessageSchema = z.object({
   name: requiredText("Name is required."),
   phone: requiredText("Phone number is required."),
@@ -91,5 +73,4 @@ export const contactMessageSchema = z.object({
 
 export type ContactMessageInput = z.infer<typeof contactMessageSchema>;
 export type RefillRequestInput = z.infer<typeof refillRequestSchema>;
-export type TransferRequestInput = z.infer<typeof transferRequestSchema>;
 

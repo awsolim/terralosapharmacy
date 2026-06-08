@@ -16,14 +16,6 @@ export const serviceTiles: ServiceTile[] = [
     imageAlt: "Prescription paperwork and medication packaging",
   },
   {
-    title: "Prescription Transfers",
-    shortLine: "Move prescriptions to Tera Losa Pharmacy.",
-    details:
-      "Send us your current pharmacy details and we can help begin the transfer process. The pharmacy may contact you if more information is needed.",
-    image: "/images/stocktablet.jpg",
-    imageAlt: "Tablet used for prescription transfer support",
-  },
-  {
     title: "Medication Reviews",
     shortLine: "Understand your medications more clearly.",
     details:
@@ -37,7 +29,7 @@ export const serviceTiles: ServiceTile[] = [
     details:
       "For eligible minor conditions or prescription needs, the pharmacy team can explain available prescribing services and next steps.",
     image: "/images/stockrefill.jpg",
-    imageAlt: "Tera Losa Pharmacy team inside the pharmacy",
+    imageAlt: "Terra Losa Pharmacy team inside the pharmacy",
   },
   {
     title: "Vaccines & Injections",
@@ -56,3 +48,38 @@ export const serviceTiles: ServiceTile[] = [
     imageAlt: "Organized pharmacy shelves and medication products",
   },
 ];
+
+export const serviceImageBySlug: Record<string, Pick<ServiceTile, "image" | "imageAlt">> = {
+  "blister-packaging": {
+    image: "/images/stockshelves.avif",
+    imageAlt: "Organized pharmacy shelves and medication products",
+  },
+  delivery: {
+    image: "/images/stockshelves.avif",
+    imageAlt: "Organized pharmacy shelves and medication products",
+  },
+  "diabetes-support": {
+    image: "/images/stockmedicine.jpg",
+    imageAlt: "Medication and pharmacy health products",
+  },
+  "medication-reviews": {
+    image: "/images/stockexplanation.jpg",
+    imageAlt: "Medication consultation and explanation at a table",
+  },
+  "minor-ailments-prescribing": {
+    image: "/images/stockrefill.jpg",
+    imageAlt: "Terra Losa Pharmacy team inside the pharmacy",
+  },
+  "over-the-counter-guidance": {
+    image: "/images/stockpills.jpg",
+    imageAlt: "Pharmacy pills and over-the-counter medication",
+  },
+  "prescription-refills": {
+    image: "/images/stockprescription.jpg",
+    imageAlt: "Prescription paperwork and medication packaging",
+  },
+  "vaccines-injections": {
+    image: "/images/stockvaccination.jpg",
+    imageAlt: "Vaccine preparation in a pharmacy setting",
+  },
+};

@@ -3,22 +3,7 @@ import Image from "next/image";
 import type { CSSProperties } from "react";
 import { buttonStyles } from "@/components/ui/button";
 import { ServiceGrid } from "@/components/ui/service-grid";
-import { serviceTiles } from "@/lib/services";
-
-const conditions = [
-  "Cold sores",
-  "Allergies",
-  "Minor skin concerns",
-  "Prescription renewals",
-  "Pink eye",
-  "Hay fever",
-  "Oral thrush",
-  "Insect bites",
-  "Acne",
-  "Shingles",
-  "Impetigo",
-  "Hemorrhoids",
-];
+import { getPublicContent, textOrFallback } from "@/lib/content";
 
 const reviews = [
   {
@@ -52,13 +37,13 @@ const ribbonItems = [
 // Temporary mobile hero tuning values. Lock these after final DevTools adjustment.
 const heroMobileImageStyle = {
   "--hero-mobile-image-x": "0px",
-  "--hero-mobile-image-y": "-105px",
+  "--hero-mobile-image-y": "-74px",
   "--hero-mobile-image-scale": "1",
 } as CSSProperties;
 
 const heroMobileContentStyle = {
-  "--hero-mobile-content-x": "6px",
-  "--hero-mobile-content-y": "129px",
+  "--hero-mobile-content-x": "0px",
+  "--hero-mobile-content-y": "152px",
 } as CSSProperties;
 
 const heroMobileFrameStyle = {
@@ -195,7 +180,61 @@ function FactIcon({ type }: { type: string }) {
   );
 }
 
-export default function HomePage() {
+function renderHeroTitle(title: string) {
+  const parts = title.split(/(\bcare\b|\bhome\b)/i);
+
+  return parts.map((part, index) => {
+    const normalized = part.toLowerCase();
+
+    if (normalized === "care") {
+      return (
+        <span className="text-awning" key={`${part}-${index}`}>
+          {part}
+        </span>
+      );
+    }
+
+    if (normalized === "home") {
+      return (
+        <span className="text-storefront-green" key={`${part}-${index}`}>
+          {part}
+        </span>
+      );
+    }
+
+    return part;
+  });
+}
+
+function renderMobileHeroTitle(title: string) {
+  const normalized = title.trim().toLowerCase();
+
+  if (normalized === "personal pharmacy care, close to home.") {
+    return (
+      <>
+        Personal pharmacy{" "}
+        <span className="text-awning/90">care</span>,
+        <br />
+        close to home.
+      </>
+    );
+  }
+
+  return renderHeroTitle(title);
+}
+
+export default async function HomePage() {
+  const content = await getPublicContent();
+  const hero = content.sections.get("hero");
+  const localCare = content.sections.get("local_care");
+  const servicesIntro = content.sections.get("services_intro");
+  const patientInfo = content.sections.get("patient_info_callout");
+  const finalCta = content.sections.get("final_cta");
+  const heroTitle = textOrFallback(
+    hero?.title,
+    "Personal pharmacy care, close to home.",
+  );
+
   return (
     <div>
       <section className="relative isolate overflow-hidden border-b border-border/70 bg-[#fbf7ee]">
@@ -217,7 +256,7 @@ export default function HomePage() {
         </div>
         <div className="absolute inset-x-0 bottom-0 top-3 hidden lg:block">
           <Image
-            alt="Exterior storefront of Tera Losa Pharmacy"
+            alt="Exterior storefront of Terra Losa Pharmacy"
             className="object-cover object-center"
             fill
             priority
@@ -228,62 +267,69 @@ export default function HomePage() {
         </div>
 
         <div
-          className="relative grid min-h-[var(--hero-mobile-min-height)] w-full px-5 pb-8 pt-32 sm:px-8 sm:pb-16 sm:pt-20 lg:min-h-[680px] lg:px-14 lg:pt-20 xl:px-20 xl:pb-20"
+          className="relative grid min-h-[var(--hero-mobile-min-height)] w-full px-5 pb-8 pt-24 sm:px-8 sm:pb-12 sm:pt-16 lg:min-h-[clamp(500px,58vw,620px)] lg:px-[clamp(3rem,6vw,5rem)] lg:py-[clamp(3.5rem,6vw,5.5rem)]"
           data-hero-mobile-frame-tuner
           style={heroMobileFrameStyle}
         >
           <div
-            className="max-w-[38rem] self-start py-0 [transform:translate(var(--hero-mobile-content-x),var(--hero-mobile-content-y))] sm:self-center lg:max-w-[44rem] lg:translate-x-0 lg:translate-y-0 lg:py-10 lg:[transform:none]"
+            className="relative max-w-[34rem] self-start py-0 [transform:translate(var(--hero-mobile-content-x),var(--hero-mobile-content-y))] sm:self-center lg:max-w-[42rem] lg:translate-x-0 lg:translate-y-0 lg:py-0 lg:[transform:none]"
             data-hero-mobile-content-tuner
             style={heroMobileContentStyle}
           >
-            <h1 className="max-w-[38rem] font-sans text-4xl font-extrabold leading-[1.02] text-foreground sm:text-6xl lg:max-w-[44rem] lg:text-8xl">
-              Personal pharmacy{" "}
-              <span className="text-awning lg:text-storefront-green">care</span>, close to{" "}
-              <span className="text-awning">home</span>.
+            <h1 className="max-w-[42rem] font-sans text-[clamp(2.35rem,8vw,3.35rem)] font-extrabold leading-[1] text-foreground drop-shadow-[0_1px_0_rgba(255,255,255,0.5)] sm:text-[clamp(2.75rem,7vw,4.4rem)] lg:text-[clamp(4rem,5vw,5.25rem)]">
+              <span className="lg:hidden">{renderMobileHeroTitle(heroTitle)}</span>
+              <span className="hidden lg:inline">{renderHeroTitle(heroTitle)}</span>
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-8 text-muted sm:text-xl sm:leading-9">
-              Refills, prescribing support, and medication questions handled by
-              a team you can reach.
+            <p className="mt-4 max-w-[29rem] text-base font-semibold leading-7 text-[#3f4944] sm:text-lg sm:leading-8 lg:max-w-xl lg:font-normal lg:text-muted">
+              {textOrFallback(
+                hero?.subtitle,
+                "Refills, prescribing support, and medication questions handled by a team you can reach.",
+              )}
             </p>
 
-            <div className="mt-6 grid grid-cols-[0.82fr_1.18fr] gap-3 sm:flex sm:flex-wrap">
+            <div className="mt-5 grid grid-cols-2 gap-3 sm:flex sm:flex-wrap">
+              <Link
+                href={textOrFallback(hero?.button_href, "/refill")}
+                className={buttonStyles({
+                  variant: "primary",
+                  size: "md",
+                  className:
+                    "w-full gap-2 whitespace-nowrap !rounded-[10px] px-3 text-sm sm:w-auto sm:px-5 lg:min-h-12 lg:gap-2 lg:px-6 lg:text-base lg:[&_svg]:size-5",
+                })}
+              >
+                <RefillIcon />
+                {textOrFallback(hero?.button_label, "Refill prescription")}
+              </Link>
               <Link
                 href="/about"
                 className={buttonStyles({
                   variant: "secondary",
                   size: "md",
                   className:
-                    "w-full gap-2 !rounded-[10px] px-2 text-sm sm:w-auto sm:px-5 lg:min-h-24 lg:gap-4 lg:px-16 lg:text-2xl lg:[&_svg]:size-8",
+                    "w-full gap-2 !rounded-[10px] px-2 text-sm sm:w-auto sm:px-5 lg:min-h-12 lg:gap-2 lg:px-6 lg:text-base lg:[&_svg]:size-5",
                 })}
               >
                 <AboutIcon />
-                About us
-              </Link>
-              <Link
-                href="/refill"
-                className={buttonStyles({
-                  variant: "primary",
-                  size: "md",
-                  className:
-                    "w-full gap-2 whitespace-nowrap !rounded-[10px] px-3 text-sm sm:w-auto sm:px-5 lg:min-h-24 lg:gap-4 lg:px-16 lg:text-2xl lg:[&_svg]:size-8",
-                })}
-              >
-                <RefillIcon />
-                Refill prescription
+                {textOrFallback(hero?.secondary_button_label, "About us")}
               </Link>
             </div>
           </div>
         </div>
 
-        <div className="relative bg-[linear-gradient(90deg,var(--storefront-green),var(--awning),#bdc8cb)] px-5 py-6 text-white shadow-[0_-18px_50px_rgba(14,106,120,0.12)] sm:px-6 lg:px-8">
-          <div className="mx-auto flex w-full max-w-[96rem] flex-col gap-3 text-base font-bold sm:flex-row sm:flex-wrap sm:items-center sm:justify-between lg:text-lg">
+        {content.settings.homepage_announcement ? (
+          <div className="relative bg-surface px-5 py-4 text-center text-sm font-bold text-awning shadow-sm">
+            {content.settings.homepage_announcement}
+          </div>
+        ) : null}
+
+        <div className="relative bg-[linear-gradient(90deg,var(--storefront-green),var(--awning),#bdc8cb)] px-5 py-4 text-white shadow-[0_-18px_50px_rgba(14,106,120,0.12)] sm:px-6 lg:px-8">
+          <div className="mx-auto flex w-full max-w-[86rem] flex-col gap-2 text-sm font-bold sm:flex-row sm:flex-wrap sm:items-center sm:justify-between lg:text-base">
             {ribbonItems.map(([icon, item]) => (
               <p
-                className="inline-flex items-center gap-3 rounded-full bg-white/14 px-4 py-2.5 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.2)] ring-1 ring-white/18"
+                className="inline-flex items-center gap-2 rounded-full bg-white/14 px-3.5 py-2 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.2)] ring-1 ring-white/18"
                 key={item}
               >
-                <span className="flex size-8 items-center justify-center rounded-full bg-white/20 text-white ring-1 ring-white/22">
+                <span className="flex size-7 items-center justify-center rounded-full bg-white/20 text-white ring-1 ring-white/22">
                   <FactIcon type={icon} />
                 </span>
                 {item}
@@ -293,11 +339,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="w-full bg-background px-5 py-16 sm:px-6 sm:py-24 lg:px-8">
-        <div className="mx-auto grid w-full max-w-[88rem] gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-          <div className="relative min-h-[460px] overflow-hidden rounded-[30px] shadow-[0_28px_80px_rgba(31,45,38,0.14)] ring-1 ring-border/50 lg:min-h-[560px]">
+      <section className="w-full bg-background px-5 py-[clamp(3.5rem,6vw,5rem)] sm:px-6 lg:px-8">
+        <div className="mx-auto grid w-full max-w-[82rem] gap-[clamp(1.5rem,4vw,3rem)] lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+          <div className="relative min-h-[340px] overflow-hidden rounded-[30px] shadow-[0_28px_80px_rgba(31,45,38,0.14)] ring-1 ring-border/50 sm:min-h-[400px] lg:min-h-[clamp(400px,36vw,500px)]">
             <Image
-              alt="Tera Losa Pharmacy staff helping a patient"
+              alt="Terra Losa Pharmacy staff helping a patient"
               className="object-cover object-[50%_34%]"
               fill
               sizes="(min-width: 1024px) 46vw, 100vw"
@@ -306,28 +352,29 @@ export default function HomePage() {
             <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_55%,rgba(4,64,72,0.22)_78%,rgba(14,106,120,0.42))]" />
             <div className="absolute inset-x-0 bottom-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(115,191,67,0.5),rgba(14,106,120,0.34)_42%,transparent_72%)] px-7 pb-7 pt-20">
               <p className="text-sm font-bold uppercase tracking-[0.18em] text-white drop-shadow-[0_2px_12px_rgba(3,43,48,0.36)]">
-                Alberta Pharmacy Prescribing
+                {textOrFallback(localCare?.eyebrow, "Alberta Pharmacy Prescribing")}
               </p>
             </div>
           </div>
-          <div className="max-w-3xl">
-            <h2 className="font-serif text-3xl font-semibold leading-tight text-foreground sm:text-5xl">
-              Skip the Doctor&apos;s Office.{" "}
-              <span className="text-awning">Walk Right In.</span>
+          <div className="max-w-2xl">
+            <h2 className="font-serif text-[clamp(2rem,4vw,3.5rem)] font-semibold leading-tight text-foreground">
+              {textOrFallback(localCare?.title, "Skip the Doctor's Office. Walk Right In.")}
             </h2>
             <p className="mt-5 text-base leading-8 text-muted">
-              Pharmacist prescribing can help with common concerns when care is
-              appropriate and available.
+              {textOrFallback(
+                localCare?.subtitle,
+                "Pharmacist prescribing can help with common concerns when care is appropriate and available.",
+              )}
             </p>
-            <div className="mt-8">
+            <div className="mt-6">
               <p className="text-sm font-bold uppercase tracking-[0.16em] text-awning">
                 Conditions we treat
               </p>
               <div className="mt-4 grid grid-cols-1 gap-3 min-[440px]:grid-cols-2">
-                {conditions.map((condition) => (
+                {content.conditions.map((condition) => (
                   <div
                     className="min-w-0 rounded-[16px] border border-border/70 bg-white/78 p-3 shadow-sm"
-                    key={condition}
+                    key={condition.id}
                   >
                     <div className="flex items-center gap-3">
                       <span className="flex size-8 shrink-0 items-center justify-center rounded-[10px] bg-primary-soft text-primary">
@@ -335,7 +382,7 @@ export default function HomePage() {
                       </span>
                       <div>
                         <h3 className="break-words text-sm font-bold leading-snug text-foreground sm:text-lg">
-                          {condition}
+                          {condition.name}
                         </h3>
                       </div>
                     </div>
@@ -347,18 +394,23 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="w-full bg-[linear-gradient(135deg,#073f46_0%,#0e6a78_48%,#6eaa4a_100%)] px-5 py-16 text-white sm:px-6 sm:py-24 lg:px-8">
-        <div className="mx-auto w-full max-w-[88rem]">
+      <section className="w-full bg-[linear-gradient(135deg,#073f46_0%,#0e6a78_48%,#6eaa4a_100%)] px-5 py-[clamp(3.5rem,6vw,5rem)] text-white sm:px-6 lg:px-8">
+        <div className="mx-auto w-full max-w-[82rem]">
           <div className="max-w-3xl">
             <p className="text-sm font-semibold uppercase tracking-[0.16em] text-white/74">
-              Services
+              {textOrFallback(servicesIntro?.eyebrow, "Services")}
             </p>
-            <h2 className="mt-3 text-3xl font-semibold leading-[1.05] text-white sm:text-5xl lg:whitespace-nowrap">
-              Everything You Need, Under One Roof
+            <h2 className="mt-3 text-[clamp(2rem,4vw,3.5rem)] font-semibold leading-[1.05] text-white lg:whitespace-nowrap">
+              {textOrFallback(servicesIntro?.title, "Everything You Need, Under One Roof")}
             </h2>
+            {servicesIntro?.subtitle ? (
+              <p className="mt-4 max-w-2xl text-base leading-8 text-white/82">
+                {servicesIntro.subtitle}
+              </p>
+            ) : null}
           </div>
-          <div className="mt-8">
-            <ServiceGrid services={serviceTiles} />
+          <div className="mt-7">
+            <ServiceGrid services={content.featuredServices} />
           </div>
           <div className="mt-8 text-center">
             <Link
@@ -371,8 +423,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="w-full bg-blue-gray/70 px-5 py-16 sm:px-6 sm:py-24 lg:px-8">
-        <div className="mx-auto w-full max-w-[88rem]">
+      <section className="w-full bg-blue-gray/70 px-5 py-[clamp(3.5rem,6vw,5rem)] sm:px-6 lg:px-8">
+        <div className="mx-auto w-full max-w-[82rem]">
           <div className="mx-auto max-w-4xl text-center">
             <p className="text-sm font-bold uppercase tracking-[0.16em] text-awning">
               Hear what our patients say
@@ -382,7 +434,7 @@ export default function HomePage() {
                 <span key={`${star}-${index}`}>{star}</span>
               ))}
             </div>
-            <h2 className="mt-5 font-serif text-4xl font-semibold leading-tight text-foreground sm:text-6xl">
+            <h2 className="mt-4 font-serif text-[clamp(2.25rem,4vw,4.25rem)] font-semibold leading-tight text-foreground">
               4.9 stars on Google
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-muted sm:text-lg">
@@ -391,10 +443,10 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-5 lg:grid-cols-3">
+          <div className="mt-8 grid gap-5 lg:grid-cols-3">
             {reviews.map((review) => (
               <article
-                className="relative min-h-72 rounded-[28px] border border-border/70 bg-white/88 p-7 shadow-[0_20px_56px_rgba(31,45,38,0.1)]"
+                className="relative min-h-60 rounded-[24px] border border-border/70 bg-white/88 p-6 shadow-[0_20px_56px_rgba(31,45,38,0.1)]"
                 key={review.name}
               >
                 <p className="text-2xl tracking-[0.08em] text-[#f0c747]">
@@ -427,7 +479,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="relative isolate min-h-[460px] w-full overflow-hidden px-5 py-16 text-white sm:px-6 sm:py-24 lg:px-8">
+      <section className="relative isolate w-full overflow-hidden px-5 py-[clamp(3.5rem,7vw,5.5rem)] text-white sm:px-6 lg:px-8">
         <Image
           alt=""
           className="object-cover object-[50%_45%]"
@@ -437,37 +489,71 @@ export default function HomePage() {
         />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(4,64,72,0.92),rgba(14,106,120,0.72)_46%,rgba(7,63,70,0.42))]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_80%,rgba(115,191,67,0.34),transparent_36%)]" />
-        <div className="relative mx-auto flex min-h-[330px] w-full max-w-[88rem] items-center">
+        <div className="relative mx-auto flex min-h-[clamp(300px,34vw,400px)] w-full max-w-[82rem] items-center">
           <div className="max-w-2xl">
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-white/72">
-              Patient &amp; regulatory information
+              {textOrFallback(patientInfo?.eyebrow, "Patient & regulatory information")}
             </p>
-            <h2 className="mt-4 font-serif text-4xl font-semibold leading-tight sm:text-6xl">
-              Transparency patients can trust.
+            <h2 className="mt-4 font-serif text-[clamp(2.25rem,4.5vw,4.25rem)] font-semibold leading-tight">
+              {textOrFallback(patientInfo?.title, "Patient & Regulatory Information")}
             </h2>
             <p className="mt-5 max-w-xl text-base leading-8 text-white/84 sm:text-lg">
-              View pharmacy documents, privacy policies, licensing details, and
-              patient concern information in one clear place.
+              {textOrFallback(
+                patientInfo?.subtitle,
+                "Find pharmacy documents, patient concern information, privacy details, and other required resources in one place.",
+              )}
             </p>
-            <div className="mt-6 grid max-w-xl gap-3 text-sm font-semibold text-white/90 sm:grid-cols-3">
-              <p>Recognized pharmacy authority</p>
-              <p>Confidentiality comes first</p>
-              <p>Your information stays protected</p>
-            </div>
             <Link
               className={buttonStyles({
                 variant: "outline",
-                size: "lg",
+                size: "md",
                 className:
                   "mt-8 !rounded-[10px] bg-white !text-awning hover:bg-blue-gray hover:!text-awning",
               })}
-              href="/patient-information"
+              href={textOrFallback(patientInfo?.button_href, "/patient-information")}
             >
-              View patient information
+              {textOrFallback(patientInfo?.button_label, "View patient information")}
             </Link>
           </div>
         </div>
       </section>
+
+      {finalCta?.is_active !== false ? (
+        <section className="w-full bg-surface px-5 py-[clamp(3rem,5vw,4rem)] sm:px-6 lg:px-8">
+          <div className="mx-auto flex w-full max-w-[82rem] flex-col gap-5 rounded-[24px] border border-border/70 bg-white/82 p-6 shadow-[var(--shadow-soft)] sm:p-7 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-[0.16em] text-awning">
+                {textOrFallback(finalCta?.eyebrow, "Need help today?")}
+              </p>
+              <h2 className="mt-3 font-serif text-[clamp(2rem,3vw,3rem)] font-semibold text-foreground">
+                {textOrFallback(finalCta?.title, "Personal pharmacy care, close to home.")}
+              </h2>
+              <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
+                {textOrFallback(
+                  finalCta?.subtitle ?? finalCta?.body,
+                  "Call or send a request and the Terra Losa Pharmacy team will help with the next step.",
+                )}
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                className={buttonStyles({ variant: "primary", size: "md" })}
+                href={textOrFallback(finalCta?.button_href, "/refill")}
+              >
+                {textOrFallback(finalCta?.button_label, "Refill prescription")}
+              </Link>
+              {finalCta?.secondary_button_href ? (
+                <Link
+                  className={buttonStyles({ variant: "outline", size: "md" })}
+                  href={finalCta.secondary_button_href}
+                >
+                  {textOrFallback(finalCta.secondary_button_label, "Contact us")}
+                </Link>
+              ) : null}
+            </div>
+          </div>
+        </section>
+      ) : null}
     </div>
   );
 }

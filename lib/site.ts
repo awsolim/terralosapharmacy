@@ -2,15 +2,16 @@ import type { NavItem, PlaceholderPageContent } from "@/types";
 
 export const siteNavItems: NavItem[] = [
   { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
   { label: "Services", href: "/services" },
   { label: "Refill", href: "/refill" },
-  { label: "Patient Information", href: "/patient-information" },
+  { label: "Patient Info", href: "/patient-information" },
   { label: "Contact", href: "/contact" },
   { label: "Location", href: "/location" },
 ];
 
 export const pharmacyContact = {
-  name: "Tera Losa Pharmacy",
+  name: "Terra Losa Pharmacy",
   address: "Placeholder address, Edmonton, AB",
   phone: "(587) 462-1500",
   phoneHref: "+15874621500",
@@ -37,17 +38,17 @@ export const publicPages = {
     eyebrow: "Contact",
     title: "Reach the pharmacy team.",
     description:
-      "Send a non-urgent pharmacy message securely to Tera Losa Pharmacy.",
+      "Send a non-urgent pharmacy message securely to Terra Losa Pharmacy.",
   },
   about: {
     eyebrow: "About",
     title: "Independent pharmacy care with a local point of view.",
     description:
-      "This page will tell the Tera Losa Pharmacy story, introduce the team, and explain the care philosophy.",
+      "This page will tell the Terra Losa Pharmacy story, introduce the team, and explain the care philosophy.",
   },
   location: {
     eyebrow: "Location",
-    title: "Find Tera Losa Pharmacy.",
+    title: "Find Terra Losa Pharmacy.",
     description:
       "A future map, parking notes, accessibility details, and hours will be placed here.",
   },
@@ -62,38 +63,28 @@ export const publicPages = {
 export const adminPages = {
   login: {
     eyebrow: "Admin",
-    title: "Admin login placeholder.",
-    description:
-      "Authentication will be added in a later phase. This page only reserves the login route.",
+    title: "Admin login.",
+    description: "Secure staff login for Terra Losa Pharmacy.",
   },
   dashboard: {
     eyebrow: "Admin dashboard",
-    title: "Dashboard placeholder.",
+    title: "Staff workspace.",
     description:
-      "Future internal summaries for refills, transfers, messages, and content management will start here.",
+      "Future internal summaries for refills, messages, and content management will start here.",
   },
   refills: {
     eyebrow: "Admin",
-    title: "Refill requests placeholder.",
-    description:
-      "This route is reserved for reviewing future Supabase-backed refill requests.",
-  },
-  transfers: {
-    eyebrow: "Admin",
-    title: "Transfer requests placeholder.",
-    description:
-      "This route is reserved for reviewing future prescription transfer requests.",
+    title: "Refill Requests",
+    description: "Request management will be added in the next phase.",
   },
   messages: {
     eyebrow: "Admin",
-    title: "Messages placeholder.",
-    description:
-      "This route is reserved for future patient contact messages and workflow status.",
+    title: "Contact Messages",
+    description: "Message management will be added in the next phase.",
   },
   content: {
     eyebrow: "Admin",
-    title: "Content management placeholder.",
-    description:
-      "This route is reserved for future editable site content and pharmacy announcements.",
+    title: "Website Content",
+    description: "Editable website content will be added later.",
   },
 } satisfies Record<string, PlaceholderPageContent>;

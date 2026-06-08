@@ -1,4 +1,11 @@
-export type RequestStatus = "new" | "in_review" | "completed" | "archived";
+export type RefillStatus =
+  | "new"
+  | "in_review"
+  | "waiting_for_patient"
+  | "completed"
+  | "archived";
+export type ContactStatus = "new" | "read" | "archived";
+export type RequestStatus = RefillStatus | ContactStatus;
 export type AdminRole = "owner" | "staff";
 export type FulfillmentPreference = "pickup" | "delivery" | "not_sure";
 export type RequestFileType = "refill" | "transfer";
@@ -56,7 +63,7 @@ export type RefillRequest = {
   fulfillment_preference: FulfillmentPreference;
   notes: string | null;
   consent_given: boolean;
-  status: RequestStatus;
+  status: RefillStatus;
   internal_notes: string | null;
   created_at: string;
   updated_at: string;
@@ -89,7 +96,7 @@ export type ContactMessage = {
   email: string | null;
   reason: string;
   message: string;
-  status: RequestStatus;
+  status: ContactStatus;
   created_at: string;
   updated_at: string;
 };

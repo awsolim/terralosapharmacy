@@ -84,7 +84,7 @@ export async function uploadPrescriptionFile({
 }: {
   file: File;
   requestId: string;
-  requestType: "refill" | "transfer";
+  requestType: "refill";
 }) {
   const supabase = createAdminSupabaseClient();
   await ensurePrescriptionUploadBucket(supabase);

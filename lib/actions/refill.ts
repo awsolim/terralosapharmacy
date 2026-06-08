@@ -27,7 +27,7 @@ type RefillField =
   | "website";
 
 const successMessage =
-  "Thank you. Your refill request has been sent to Tera Losa Pharmacy. A pharmacy team member may contact you if more information is needed. For urgent or same-day needs, please call the pharmacy directly.";
+  "Thank you. Your refill request has been sent to Terra Losa Pharmacy. A pharmacy team member may contact you if more information is needed. For urgent or same-day needs, please call the pharmacy directly.";
 
 function getFields(formData: FormData): Partial<Record<RefillField, string>> {
   return {

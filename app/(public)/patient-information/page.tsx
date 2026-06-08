@@ -1,41 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
 import { buttonStyles } from "@/components/ui/button";
+import { getPublicContent, textOrFallback } from "@/lib/content";
 
-const documents = [
-  {
-    title: "Pharmacy license",
-    description: "Placeholder for current licensing and registration documents.",
-    action: "View PDF",
-  },
-  {
-    title: "Code of ethics",
-    description: "Placeholder for professional standards and ethical practice.",
-    action: "View PDF",
-  },
-  {
-    title: "Privacy policy",
-    description: "Placeholder for how patient information is collected and protected.",
-    action: "Read policy",
-  },
-  {
-    title: "Patient concerns",
-    description: "Placeholder for complaint, concern, and resolution information.",
-    action: "View PDF",
-  },
-  {
-    title: "Patient records",
-    description: "Placeholder for requesting access to pharmacy records.",
-    action: "View PDF",
-  },
-  {
-    title: "Prescription safety",
-    description: "Placeholder for safe medication handling and patient guidance.",
-    action: "View PDF",
-  },
+const documentCategories = [
+  "Licensing & Pharmacy Information",
+  "Patient Concerns",
+  "Privacy & Information Practices",
+  "Professional Standards",
 ];
 
-export default function PatientInformationPage() {
+export default async function PatientInformationPage() {
+  const content = await getPublicContent();
+  const page = content.pages.get("patient-info");
+
   return (
     <div>
       <section className="relative isolate min-h-[520px] overflow-hidden px-5 py-16 text-white sm:px-6 sm:py-24 lg:px-8">
@@ -55,12 +33,13 @@ export default function PatientInformationPage() {
               Patient &amp; regulatory information
             </p>
             <h1 className="mt-4 font-serif text-5xl font-semibold leading-tight sm:text-7xl">
-              Clear documents. Clear expectations.
+              {textOrFallback(page?.hero_title, "Patient & Regulatory Information")}
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-white/84">
-              Find placeholder documents for pharmacy licensing, privacy,
-              professional standards, and patient concerns. Final PDFs can be
-              connected later when production content is ready.
+              {textOrFallback(
+                page?.hero_subtitle,
+                "Find pharmacy documents, patient concern information, privacy details, and other required resources in one place.",
+              )}
             </p>
           </div>
         </div>
@@ -73,42 +52,66 @@ export default function PatientInformationPage() {
               Documents
             </p>
             <h2 className="mt-3 font-serif text-4xl font-semibold leading-tight text-foreground sm:text-6xl">
-              Pharmacy information in one place.
+              {textOrFallback(page?.subtitle, "Pharmacy information in one place.")}
             </h2>
             <p className="mt-4 text-base leading-8 text-muted sm:text-lg">
-              These cards are placeholders for future PDF viewing or downloads.
-              No real document storage is connected in this phase.
+              {textOrFallback(
+                page?.body,
+                "Review active pharmacy documents and resources. Some documents may link to external PDFs or official resources.",
+              )}
             </p>
           </div>
 
-          <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {documents.map((document) => (
-              <article
-                className="rounded-[24px] border border-border/70 bg-white/82 p-6 shadow-[0_18px_50px_rgba(31,45,38,0.09)]"
-                key={document.title}
-              >
-                <p className="text-sm font-bold uppercase tracking-[0.14em] text-awning">
-                  Placeholder PDF
-                </p>
-                <h3 className="mt-4 font-serif text-2xl font-semibold text-foreground">
-                  {document.title}
-                </h3>
-                <p className="mt-3 min-h-14 text-sm leading-7 text-muted">
-                  {document.description}
-                </p>
-                <a
-                  className={buttonStyles({
-                    variant: "outline",
-                    size: "sm",
-                    className: "mt-6 pointer-events-none opacity-80",
-                  })}
-                  href="#"
-                  aria-disabled="true"
-                >
-                  {document.action}
-                </a>
-              </article>
-            ))}
+          <div className="mt-10 grid gap-8">
+            {documentCategories.map((category) => {
+              const documents = content.documents.filter(
+                (document) => document.category === category,
+              );
+
+              return (
+                <section key={category}>
+                  <h3 className="font-serif text-3xl font-semibold text-foreground">
+                    {category}
+                  </h3>
+                  <div className="mt-4 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                    {documents.length > 0 ? (
+                      documents.map((document) => (
+                        <article
+                          className="rounded-[24px] border border-border/70 bg-white/82 p-6 shadow-[0_18px_50px_rgba(31,45,38,0.09)]"
+                          key={document.id}
+                        >
+                          <p className="text-sm font-bold uppercase tracking-[0.14em] text-awning">
+                            {document.category}
+                          </p>
+                          <h4 className="mt-4 font-serif text-2xl font-semibold text-foreground">
+                            {document.title}
+                          </h4>
+                          <p className="mt-3 min-h-14 text-sm leading-7 text-muted">
+                            {document.description}
+                          </p>
+                          {document.document_url ? (
+                            <a
+                              className={buttonStyles({
+                                variant: "outline",
+                                size: "sm",
+                                className: "mt-6",
+                              })}
+                              href={document.document_url}
+                            >
+                              View document
+                            </a>
+                          ) : null}
+                        </article>
+                      ))
+                    ) : (
+                      <p className="rounded-[18px] bg-white/70 p-5 text-sm leading-7 text-muted">
+                        No active documents are listed in this category yet.
+                      </p>
+                    )}
+                  </div>
+                </section>
+              );
+            })}
           </div>
 
           <div className="mt-10">

@@ -37,9 +37,9 @@ export function PublicNavbar() {
 
   return (
     <header className="sticky top-0 z-20 border-b border-border/70 bg-surface/92 shadow-[0_12px_34px_rgba(31,45,38,0.07)] backdrop-blur-xl">
-      <div className="w-full px-4 py-4 sm:px-6 lg:px-10 2xl:px-14">
+      <div className="w-full px-4 py-4 sm:px-6 lg:px-6 2xl:px-10">
         <div>
-          <div className="flex items-center gap-5 xl:gap-8">
+          <div className="flex items-center gap-4 xl:gap-6">
             <Link
               href="/"
               className="group inline-flex min-w-0 shrink-0 items-center gap-2 rounded-[14px] focus:outline-none focus:ring-2 focus:ring-ring sm:gap-3"
@@ -56,18 +56,18 @@ export function PublicNavbar() {
               </span>
               <span className="min-w-0 leading-tight">
                 <span className="block max-w-[calc(100vw-11.5rem)] whitespace-nowrap font-serif text-[clamp(1rem,4.25vw,1.75rem)] font-semibold text-foreground sm:hidden">
-                  Tera Losa
+                  Terra Losa
                   <span className="block leading-none">Pharmacy</span>
                 </span>
-                <span className="hidden whitespace-nowrap font-serif text-[clamp(1rem,4.25vw,1.75rem)] font-semibold text-foreground sm:block lg:text-2xl xl:text-[1.65rem]">
-                  Tera Losa Pharmacy
+                <span className="hidden whitespace-nowrap font-serif text-[clamp(1rem,4.25vw,1.75rem)] font-semibold text-foreground sm:block lg:text-xl xl:text-2xl">
+                  Terra Losa Pharmacy
                 </span>
               </span>
             </Link>
 
-            <div className="hidden min-w-0 flex-1 items-center justify-between gap-5 lg:flex xl:gap-8">
+            <div className="hidden min-w-0 flex-1 items-center justify-between gap-4 lg:flex xl:gap-6">
               <nav aria-label="Primary navigation" className="min-w-0 flex-1">
-                <ul className="flex flex-nowrap items-center justify-center gap-2 xl:gap-4">
+                <ul className="flex flex-nowrap items-center justify-center gap-1.5 xl:gap-2">
                   {navItems.map((item) => {
                     const isActive = pathname === item.href;
 
@@ -77,7 +77,7 @@ export function PublicNavbar() {
                           href={item.href}
                           aria-current={isActive ? "page" : undefined}
                           className={cn(
-                            "inline-flex min-h-11 items-center whitespace-nowrap rounded-full px-3 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-ring xl:px-4 xl:text-base",
+                            "inline-flex min-h-10 items-center whitespace-nowrap rounded-full px-3 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-ring xl:px-3.5",
                             isActive
                               ? "bg-blue-gray text-primary shadow-[0_10px_24px_rgba(31,45,38,0.08)]"
                               : "text-muted hover:bg-primary-soft hover:text-primary",
@@ -93,7 +93,7 @@ export function PublicNavbar() {
 
               <div className="ml-auto flex shrink-0 items-center gap-2 xl:gap-3">
                 <a
-                  className="hidden min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-blue-gray/70 px-4 py-2.5 text-base font-bold text-awning ring-1 ring-white/70 transition hover:bg-white xl:inline-flex"
+                  className="hidden min-h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-blue-gray/70 px-3.5 py-2 text-sm font-bold text-awning ring-1 ring-white/70 transition hover:bg-white xl:inline-flex"
                   href={`tel:${pharmacyContact.phoneHref}`}
                 >
                   <PhoneIcon />
