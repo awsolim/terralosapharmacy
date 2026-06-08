@@ -20,6 +20,7 @@ const variants: Record<ButtonVariant, string> = {
   outline:
     "border border-awning/20 bg-surface/82 text-awning shadow-[0_10px_24px_rgba(31,45,38,0.06),inset_0_1px_0_rgba(255,255,255,0.86)] backdrop-blur hover:-translate-y-0.5 hover:border-awning/35 hover:bg-white",
   ghost: "text-primary hover:bg-primary-soft/80",
+  
 };
 
 const sizes: Record<ButtonSize, string> = {

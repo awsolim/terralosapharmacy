@@ -154,7 +154,7 @@ export default async function AboutPage() {
             </h2>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-white/82">
               We would be happy to help with refills, medication questions, and
-              practical next steps for your pharmacy care.
+               next steps for your pharmacy care.
             </p>
           </div>
           <div className="flex flex-wrap justify-center gap-3">
@@ -171,12 +171,12 @@ export default async function AboutPage() {
             </Link>
             <Link
               className={buttonStyles({
-                variant: "primary",
+                variant: "outline",
                 size: "md",
               })}
-              href="/refill"
+              href="/location"
             >
-              Request refill
+              Visit Us
             </Link>
           </div>
         </div>

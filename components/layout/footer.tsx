@@ -30,7 +30,7 @@ export async function Footer() {
                 </p>
               </div>
             </div>
-            <p className="mt-4 max-w-md font-serif text-2xl font-semibold leading-tight text-foreground">
+            <p className="mt-4 max-w-md font-serif text-xl font-semibold leading-tight text-foreground">
               Personal care, close to home.
             </p>
             <p className="mt-3 max-w-md text-sm leading-7 text-muted">

@@ -22,11 +22,10 @@ export default function ContactPage() {
             Contact
           </p>
           <h1 className="mt-4 text-4xl font-extrabold leading-tight sm:text-6xl">
-            Send a general message.
+            Talk to Us.
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-white/86">
-            Use this page for non-urgent pharmacy questions. For urgent or
-            time-sensitive requests, call the pharmacy directly.
+            Questions about prescriptions, services, or visiting the pharmacy? Send us a message and our team will get back to you as soon as possible
           </p>
         </div>
       </section>
@@ -58,12 +57,11 @@ export default function ContactPage() {
             <p className="mt-4 text-3xl font-extrabold">
               {pharmacyContact.phone}
             </p>
-            <p className="mt-2 text-sm text-white/76">
+            {/* <p className="mt-2 text-sm text-white/76">
               Fax {pharmacyContact.fax}
-            </p>
+            </p> */}
             <p className="mt-4 text-sm leading-7 text-white/84">
-              Call for urgent pharmacy needs or time-sensitive prescription
-              questions.
+              For urgent needs, we recommend calling us directly
             </p>
           </Card>
           <Card padding="md">
