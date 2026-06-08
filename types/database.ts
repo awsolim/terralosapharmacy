@@ -22,6 +22,7 @@ export type PharmacySettings = {
   province: string | null;
   postal_code: string | null;
   google_maps_url: string | null;
+  google_maps_embed_url: string | null;
   homepage_announcement: string | null;
   delivery_note: string | null;
   updated_at: string;
@@ -41,8 +42,10 @@ export type PharmacyService = {
   id: string;
   title: string;
   slug: string;
+  description: string | null;
   short_description: string | null;
   long_description: string | null;
+  checklist_items: string | null;
   icon_name: string | null;
   is_featured: boolean;
   display_order: number;
@@ -55,7 +58,7 @@ export type RefillRequest = {
   id: string;
   first_name: string;
   last_name: string;
-  date_of_birth: string;
+  date_of_birth: string | null;
   phone: string;
   email: string | null;
   prescription_number: string | null;

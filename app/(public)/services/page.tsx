@@ -1,33 +1,10 @@
 import Image from "next/image";
+import { PageHeroLabels } from "@/components/layout/page-hero-labels";
 import { ServiceGrid } from "@/components/ui/service-grid";
 import { getPublicContent, textOrFallback, type PublicService } from "@/lib/content";
 
-const conditionCardStyles = [
-  {
-    accent: "bg-awning",
-    card: "border-awning/20 bg-[#e4f6f2]",
-  },
-  {
-    accent: "bg-storefront-green",
-    card: "border-storefront-green/20 bg-[#f0f9e8]",
-  },
-  {
-    accent: "bg-[#2f7fa0]",
-    card: "border-[#2f7fa0]/20 bg-[#eaf5f8]",
-  },
-  {
-    accent: "bg-[#d8a22a]",
-    card: "border-[#d8a22a]/25 bg-[#fff7de]",
-  },
-  {
-    accent: "bg-[#5f8d7a]",
-    card: "border-[#5f8d7a]/25 bg-[#edf7f1]",
-  },
-  {
-    accent: "bg-[#7a9f3f]",
-    card: "border-[#7a9f3f]/25 bg-[#f5fae9]",
-  },
-];
+// Optional: set this to a public image path such as "/images/stockmedicine.jpg".
+const heroBackgroundImage = "/images/stockmedicine.jpg";
 
 function ServiceIcon({ label, iconName }: { label: string; iconName?: string | null }) {
   const iconKey = `${iconName ?? ""} ${label}`.toLowerCase();
@@ -118,20 +95,45 @@ function ServiceIcon({ label, iconName }: { label: string; iconName?: string | n
 }
 
 function splitServiceBody(service: PublicService) {
-  const raw = service.long_description || service.short_description || "";
+  const raw = service.long_description || "";
   const lines = raw
     .split(/\r?\n/)
     .map((line) => line.trim())
     .filter(Boolean);
-  const checklist = lines
-    .filter((line) => line.startsWith("- "))
-    .map((line) => line.slice(2));
+  const checklist = service.checklist_items
+    ? service.checklist_items
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean)
+    : lines
+        .filter((line) => line.startsWith("- "))
+        .map((line) => line.slice(2));
   const description =
-    lines.filter((line) => !line.startsWith("- ")).join(" ") ||
+    service.description ||
     service.short_description ||
+    lines.filter((line) => !line.startsWith("- ")).join(" ") ||
     "";
 
   return { checklist, description };
+}
+
+function CheckCircleIcon() {
+  return (
+    <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,#dff4ec,#f1fbeb)] text-storefront-green ring-1 ring-storefront-green/18">
+      <svg
+        aria-hidden="true"
+        className="size-3.5"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2.4"
+        viewBox="0 0 24 24"
+      >
+        <path d="m6 12 4 4 8-8" />
+      </svg>
+    </span>
+  );
 }
 
 function ServiceDetailRow({
@@ -145,36 +147,50 @@ function ServiceDetailRow({
   const { checklist, description } = splitServiceBody(service);
 
   return (
-    <article className="grid overflow-hidden rounded-[28px] border border-white/75 bg-surface/90 shadow-[var(--shadow-soft)] ring-1 ring-border/45 lg:grid-cols-2">
+    <article className="grid gap-8 py-8 lg:grid-cols-2 lg:items-center lg:gap-14 lg:py-12">
       <div
         className={
           isReversed
-            ? "relative min-h-[280px] lg:order-2 lg:min-h-[360px]"
-            : "relative min-h-[280px] lg:min-h-[360px]"
+            ? "relative"
+            : "relative lg:order-2"
         }
       >
-        <Image
-          alt={service.imageAlt}
-          className="object-cover"
-          fill
-          sizes="(min-width: 1024px) 44rem, 100vw"
-          src={service.image}
+        <div className="relative min-h-[280px] overflow-hidden rounded-[26px] shadow-[0_26px_78px_rgba(15,106,92,0.24)] ring-1 ring-border/45 lg:min-h-[360px]">
+          <Image
+            alt={service.imageAlt}
+            className="object-cover"
+            fill
+            sizes="(min-width: 1024px) 44rem, 100vw"
+            src={service.image}
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-x-0 bottom-0 h-[46%] bg-[radial-gradient(circle_at_28%_100%,rgba(139,196,82,0.72),transparent_42%),radial-gradient(circle_at_72%_96%,rgba(14,106,120,0.62),transparent_48%),linear-gradient(0deg,rgba(255,255,255,0.86),rgba(255,255,255,0.08)_72%,transparent)]"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(90deg,rgba(139,196,82,0.52),rgba(14,106,120,0.42),rgba(216,221,224,0.34))] blur-2xl"
+          />
+        </div>
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-8 -bottom-6 h-20 rounded-full bg-[radial-gradient(circle,rgba(139,196,82,0.5),rgba(14,106,120,0.28)_48%,transparent_75%)] blur-2xl"
         />
       </div>
-      <div className="flex items-center p-6 sm:p-8 lg:p-10">
+      <div className={isReversed ? "lg:order-2" : "lg:order-1"}>
         <div>
           <div className="flex items-center gap-4">
             <ServiceIcon iconName={service.icon_name} label={service.title} />
-            <h2 className="font-serif text-3xl font-semibold leading-tight text-foreground sm:text-4xl">
+            <h2 className="text-3xl font-extrabold leading-tight text-foreground sm:text-4xl">
               {service.title}
             </h2>
           </div>
           <p className="mt-5 text-base leading-8 text-muted">{description}</p>
           {checklist.length > 0 ? (
-            <ul className="mt-5 grid gap-2 text-sm font-semibold text-foreground">
+            <ul className="ml-3 mt-5 grid gap-2.5 text-sm font-semibold text-foreground">
               {checklist.map((item) => (
-                <li className="flex gap-2" key={item}>
-                  <span className="mt-1 size-2 rounded-full bg-storefront-green" />
+                <li className="flex items-start gap-2.5" key={item}>
+                  <CheckCircleIcon />
                   {item}
                 </li>
               ))}
@@ -192,8 +208,15 @@ export default async function ServicesPage() {
 
   return (
     <div className="bg-background">
-      <section className="bg-[linear-gradient(135deg,#0e6a78_0%,#4f9b82_58%,#8bc452_100%)] px-5 py-12 text-white sm:px-6 sm:py-16 lg:px-8">
-        <div className="mx-auto w-full max-w-[88rem]">
+      <section className="relative isolate overflow-hidden bg-[linear-gradient(135deg,#0e6a78_0%,#4f9b82_58%,#8bc452_100%)] px-5 py-12 text-white sm:px-6 sm:py-16 lg:px-8">
+        {heroBackgroundImage ? (
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 -z-10 bg-cover bg-center opacity-15"
+            style={{ backgroundImage: `url(${heroBackgroundImage})` }}
+          />
+        ) : null}
+        <div className="relative mx-auto w-full max-w-[88rem]">
           <div className="max-w-[82rem]">
             <p className="text-sm font-bold uppercase tracking-[0.16em] text-white/72">
               {textOrFallback(page?.eyebrow, "Services")}
@@ -210,8 +233,25 @@ export default async function ServicesPage() {
           </div>
         </div>
       </section>
+      <PageHeroLabels
+        labels={["google-rating", "free-delivery", "prescribing", "call-refill"]}
+        settings={content.settings}
+      />
 
       <div className="mx-auto w-full max-w-[88rem] px-5 py-12 sm:px-6 sm:py-16 lg:px-8">
+        <section className="mx-auto mb-8 max-w-4xl text-center">
+          <p className="text-sm font-bold uppercase tracking-[0.16em] text-awning">
+            Everything we offer
+          </p>
+          <h4 className="mt-3 text-3xl font-extrabold leading-tight text-foreground">
+            Your Complete Health Partner
+          </h4>
+          <p className="mt-4 text-base leading-8 text-muted sm:text-lg">
+            From refills to prescribing support, Terra Losa Pharmacy
+            keeps everyday care clear, local, and easy to reach.
+          </p>
+        </section>
+
         <section className="grid gap-6">
           {content.serviceRecords.length > 0 ? (
             content.serviceRecords.map((service, index) => (
@@ -233,7 +273,7 @@ export default async function ServicesPage() {
             <p className="text-sm font-bold uppercase tracking-[0.16em] text-awning">
               Conditions treated
             </p>
-            <h2 className="mt-3 font-serif text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
+            <h2 className="mt-3 text-4xl font-extrabold leading-tight text-foreground sm:text-5xl">
               Conditions we can help with
             </h2>
             <p className="mt-4 text-base leading-8 text-muted">
@@ -241,15 +281,12 @@ export default async function ServicesPage() {
             </p>
           </div>
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {content.conditions.map((condition, index) => {
-              const style = conditionCardStyles[index % conditionCardStyles.length];
-
-              return (
+            {content.conditions.map((condition) => (
                 <article
-                  className={`overflow-hidden rounded-[18px] border p-4 shadow-sm ${style.card}`}
+                  className="overflow-hidden rounded-[18px] border border-awning/12 bg-[#eaf7f2] p-4 shadow-sm"
                   key={condition.id}
                 >
-                <span className={`mb-4 block h-1.5 w-14 rounded-full ${style.accent}`} />
+                <span className="mb-4 block h-1.5 w-14 rounded-full bg-awning/45" />
                 <h3 className="text-lg font-bold text-foreground">{condition.name}</h3>
                 {condition.short_description ? (
                   <p className="mt-2 text-sm leading-7 text-muted">
@@ -257,8 +294,7 @@ export default async function ServicesPage() {
                   </p>
                 ) : null}
               </article>
-              );
-            })}
+            ))}
           </div>
         </section>
       </div>

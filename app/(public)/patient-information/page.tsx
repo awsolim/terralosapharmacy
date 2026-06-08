@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { PageHeroLabels } from "@/components/layout/page-hero-labels";
 import { buttonStyles } from "@/components/ui/button";
 import { getPublicContent, textOrFallback } from "@/lib/content";
 
@@ -32,7 +33,7 @@ export default async function PatientInformationPage() {
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-white/72">
               Patient &amp; regulatory information
             </p>
-            <h1 className="mt-4 font-serif text-5xl font-semibold leading-tight sm:text-7xl">
+            <h1 className="mt-4 text-5xl font-extrabold leading-tight sm:text-7xl">
               {textOrFallback(page?.hero_title, "Patient & Regulatory Information")}
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-white/84">
@@ -44,6 +45,7 @@ export default async function PatientInformationPage() {
           </div>
         </div>
       </section>
+      <PageHeroLabels labels={["address", "call-refill"]} settings={content.settings} />
 
       <section className="w-full bg-background px-5 py-16 sm:px-6 sm:py-24 lg:px-8">
         <div className="mx-auto w-full max-w-[88rem]">
@@ -51,7 +53,7 @@ export default async function PatientInformationPage() {
             <p className="text-sm font-bold uppercase tracking-[0.16em] text-awning">
               Documents
             </p>
-            <h2 className="mt-3 font-serif text-4xl font-semibold leading-tight text-foreground sm:text-6xl">
+            <h2 className="mt-3 text-4xl font-extrabold leading-tight text-foreground sm:text-6xl">
               {textOrFallback(page?.subtitle, "Pharmacy information in one place.")}
             </h2>
             <p className="mt-4 text-base leading-8 text-muted sm:text-lg">
@@ -70,7 +72,7 @@ export default async function PatientInformationPage() {
 
               return (
                 <section key={category}>
-                  <h3 className="font-serif text-3xl font-semibold text-foreground">
+                  <h3 className="text-3xl font-extrabold text-foreground">
                     {category}
                   </h3>
                   <div className="mt-4 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -83,7 +85,7 @@ export default async function PatientInformationPage() {
                           <p className="text-sm font-bold uppercase tracking-[0.14em] text-awning">
                             {document.category}
                           </p>
-                          <h4 className="mt-4 font-serif text-2xl font-semibold text-foreground">
+                          <h4 className="mt-4 text-2xl font-extrabold text-foreground">
                             {document.title}
                           </h4>
                           <p className="mt-3 min-h-14 text-sm leading-7 text-muted">

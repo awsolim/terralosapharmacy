@@ -17,6 +17,12 @@ const requiredLabel = (label: string) => (
   </>
 );
 
+const optionalLabel = (label: string) => (
+  <>
+    {label} <span className="text-muted">(optional)</span>
+  </>
+);
+
 function SubmitButton({ disabled }: { disabled: boolean }) {
   return (
     <Button className="w-full sm:w-auto" disabled={disabled} size="lg" type="submit">
@@ -75,9 +81,8 @@ export function ContactForm() {
         defaultValue={state.fields?.email}
         disabled={disabled}
         errorText={errorText(state.errors?.email)}
-        helperText="Optional"
         id="contact-email"
-        label="Email"
+        label={optionalLabel("Email")}
         name="email"
         type="email"
       />

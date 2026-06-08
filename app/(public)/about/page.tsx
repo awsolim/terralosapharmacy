@@ -2,7 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { buttonStyles } from "@/components/ui/button";
+import { PageHeroLabels } from "@/components/layout/page-hero-labels";
 import { getPublicContent, textOrFallback } from "@/lib/content";
+
+// Optional: set this to a public image path such as "/images/interior-staff.jpg".
+const heroBackgroundImage = "/images/storefrontweb.png";
 
 function ValueIcon({ type }: { type: string }) {
   const common = {
@@ -59,8 +63,15 @@ export default async function AboutPage() {
 
   return (
     <div className="bg-background">
-      <section className="bg-[linear-gradient(135deg,#0e6a78_0%,#4f9b82_58%,#8bc452_100%)] px-5 py-12 text-white sm:px-6 sm:py-16 lg:px-8">
-        <div className="mx-auto w-full max-w-[88rem]">
+      <section className="relative isolate overflow-hidden bg-[linear-gradient(135deg,#0e6a78_0%,#4f9b82_58%,#8bc452_100%)] px-5 py-12 text-white sm:px-6 sm:py-16 lg:px-8">
+        {heroBackgroundImage ? (
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 -z-10 bg-cover bg-center opacity-15"
+            style={{ backgroundImage: `url(${heroBackgroundImage})` }}
+          />
+        ) : null}
+        <div className="relative mx-auto w-full max-w-[88rem]">
           <p className="text-sm font-bold uppercase tracking-[0.16em] text-white/72">
             {textOrFallback(page?.eyebrow, "About")}
           </p>
@@ -78,6 +89,10 @@ export default async function AboutPage() {
           </p>
         </div>
       </section>
+      <PageHeroLabels
+        labels={["address", "google-rating", "prescribing"]}
+        settings={content.settings}
+      />
 
       <section className="bg-[#d9f5ef] px-5 py-14 sm:px-6 sm:py-16 lg:px-8">
         <div className="mx-auto grid w-full max-w-[78rem] gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
@@ -92,7 +107,7 @@ export default async function AboutPage() {
           </div>
           <div>
             <Badge variant="sage">Who We Are</Badge>
-            <h2 className="mt-5 font-serif text-[clamp(2.5rem,4vw,4rem)] font-semibold leading-tight text-foreground">
+            <h2 className="mt-5 text-[clamp(2.5rem,4vw,4rem)] font-extrabold leading-tight text-foreground">
               Our Story
             </h2>
             <div className="mt-5 whitespace-pre-line text-base leading-8 text-foreground/80">
@@ -111,7 +126,7 @@ export default async function AboutPage() {
             <p className="text-sm font-bold uppercase tracking-[0.16em] text-awning">
               What we stand for
             </p>
-            <h2 className="mt-3 font-serif text-[clamp(2.25rem,4vw,3.75rem)] font-semibold leading-tight text-foreground">
+            <h2 className="mt-3 text-[clamp(2.25rem,4vw,3.75rem)] font-extrabold leading-tight text-foreground">
               Our Values
             </h2>
           </div>
@@ -126,7 +141,7 @@ export default async function AboutPage() {
                     <ValueIcon type={value.icon_name ?? "heart"} />
                   </span>
                   <div>
-                    <h3 className="font-serif text-2xl font-semibold text-foreground">
+                    <h3 className="text-2xl font-extrabold text-foreground">
                       {value.title}
                     </h3>
                     {value.description ? (
@@ -149,7 +164,7 @@ export default async function AboutPage() {
       <section className="bg-awning px-5 py-10 text-white sm:px-6 lg:px-8">
         <div className="mx-auto flex w-full max-w-[78rem] flex-col gap-5 text-center lg:flex-row lg:items-center lg:justify-between lg:text-left">
           <div>
-            <h2 className="font-serif text-3xl font-semibold leading-tight">
+            <h2 className="text-3xl font-extrabold leading-tight">
               Come meet the Terra Losa Pharmacy team.
             </h2>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-white/82">
@@ -169,15 +184,17 @@ export default async function AboutPage() {
             >
               Contact us
             </Link>
-            <Link
+            <a
               className={buttonStyles({
                 variant: "outline",
                 size: "md",
               })}
-              href="/location"
+              href={textOrFallback(content.settings.google_maps_url, "https://www.google.com/maps/search/?api=1&query=17314%2099%20Ave%20NW%20Edmonton%20AB%20T5T%205L5")}
+              rel="noreferrer"
+              target="_blank"
             >
-              Visit Us
-            </Link>
+              Get directions
+            </a>
           </div>
         </div>
       </section>

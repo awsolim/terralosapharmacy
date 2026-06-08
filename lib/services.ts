@@ -44,14 +44,14 @@ export const serviceTiles: ServiceTile[] = [
     shortLine: "Support for delivery and medication organization.",
     details:
       "Ask about delivery options and packaging support to make regular medications easier to manage.",
-    image: "/images/stockshelves.avif",
+    image: "/images/stockblisterpack.jpg",
     imageAlt: "Organized pharmacy shelves and medication products",
   },
 ];
 
 export const serviceImageBySlug: Record<string, Pick<ServiceTile, "image" | "imageAlt">> = {
   "blister-packaging": {
-    image: "/images/stockshelves.avif",
+    image: "/images/stockblisterpack.jpg",
     imageAlt: "Organized pharmacy shelves and medication products",
   },
   delivery: {

@@ -55,11 +55,11 @@ export function PublicNavbar() {
                 />
               </span>
               <span className="min-w-0 leading-tight">
-                <span className="block max-w-[calc(100vw-11.5rem)] whitespace-nowrap font-serif text-[clamp(1rem,4.25vw,1.75rem)] font-semibold text-foreground sm:hidden">
+                <span className="block max-w-[calc(100vw-11.5rem)] whitespace-nowrap text-[clamp(1rem,4.25vw,1.75rem)] font-extrabold text-foreground sm:hidden">
                   Terra Losa
                   <span className="block leading-none">Pharmacy</span>
                 </span>
-                <span className="hidden whitespace-nowrap font-serif text-[clamp(1rem,4.25vw,1.75rem)] font-semibold text-foreground sm:block lg:text-xl xl:text-2xl">
+                <span className="hidden whitespace-nowrap text-[clamp(1rem,4.25vw,1.75rem)] font-extrabold text-foreground sm:block lg:text-xl xl:text-2xl">
                   Terra Losa Pharmacy
                 </span>
               </span>
@@ -77,10 +77,10 @@ export function PublicNavbar() {
                           href={item.href}
                           aria-current={isActive ? "page" : undefined}
                           className={cn(
-                            "inline-flex min-h-10 items-center whitespace-nowrap rounded-full px-3 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-ring xl:px-3.5",
+                            "inline-flex min-h-10 items-center whitespace-nowrap px-3 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-ring xl:px-3.5",
                             isActive
-                              ? "bg-blue-gray text-primary shadow-[0_10px_24px_rgba(31,45,38,0.08)]"
-                              : "text-muted hover:bg-primary-soft hover:text-primary",
+                              ? "text-storefront-green"
+                              : "text-muted hover:text-primary",
                           )}
                         >
                           {item.label}
@@ -185,19 +185,6 @@ export function PublicNavbar() {
                     onClick={() => setIsOpen(false)}
                   >
                     Contact
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className={buttonStyles({
-                      variant: "secondary",
-                      size: "lg",
-                      className: "w-full",
-                    })}
-                    href="/location"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Visit us
                   </Link>
                 </li>
               </ul>

@@ -20,7 +20,7 @@
   --ring: #9fc8b9;
   --shadow-soft: 0 24px 70px rgba(31, 45, 38, 0.11);
   --shadow-button: 0 14px 28px rgba(7, 63, 56, 0.18);
-  --font-display: Georgia, "Times New Roman", serif;
+  --font-display: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 
 @theme inline {
@@ -79,7 +79,6 @@
   h1,
   h2,
   h3 {
-    font-family: var(--font-display);
     letter-spacing: 0;
   }
 

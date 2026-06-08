@@ -40,16 +40,14 @@ export const fulfillmentPreferenceSchema = z.enum(
 export const refillRequestSchema = z.object({
   first_name: requiredText("First name is required."),
   last_name: requiredText("Last name is required."),
-  date_of_birth: requiredText("Date of birth is required."),
+  date_of_birth: optionalText,
   phone: requiredText("Phone number is required."),
   email: optionalEmail,
   prescription_number: optionalText,
   medication_name: optionalText,
   fulfillment_preference: fulfillmentPreferenceSchema.default("not_sure"),
   notes: optionalText,
-  consent_given: z.literal(true, {
-    error: "Consent is required before sending this request.",
-  }),
+  consent_given: z.literal(true).default(true),
   website: optionalText,
 });
 

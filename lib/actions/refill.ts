@@ -3,7 +3,6 @@
 import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 import type { FormState } from "@/lib/actions/form-state";
 import {
-  getBoolean,
   getFile,
   getString,
 } from "@/lib/actions/form-state";
@@ -52,7 +51,7 @@ export async function submitRefillRequest(
 
   const parsed = refillRequestSchema.safeParse({
     ...fields,
-    consent_given: getBoolean(formData, "consent_given"),
+    consent_given: true,
   });
 
   if (fields.website) {

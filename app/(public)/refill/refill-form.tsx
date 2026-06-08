@@ -18,6 +18,12 @@ const requiredLabel = (label: string) => (
   </>
 );
 
+const optionalLabel = (label: string) => (
+  <>
+    {label} <span className="text-muted">(optional)</span>
+  </>
+);
+
 function SubmitButton({ disabled }: { disabled: boolean }) {
   return (
     <Button className="w-full sm:w-auto" disabled={disabled} size="lg" type="submit">
@@ -73,15 +79,6 @@ export function RefillForm() {
           name="last_name"
         />
         <Input
-          defaultValue={state.fields?.date_of_birth}
-          disabled={disabled}
-          errorText={errorText(state.errors?.date_of_birth)}
-          id="date-of-birth"
-          label={requiredLabel("Date of birth")}
-          name="date_of_birth"
-          type="date"
-        />
-        <Input
           defaultValue={state.fields?.phone}
           disabled={disabled}
           errorText={errorText(state.errors?.phone)}
@@ -91,12 +88,20 @@ export function RefillForm() {
           type="tel"
         />
         <Input
+          defaultValue={state.fields?.date_of_birth}
+          disabled={disabled}
+          errorText={errorText(state.errors?.date_of_birth)}
+          id="date-of-birth"
+          label={optionalLabel("Date of birth")}
+          name="date_of_birth"
+          type="date"
+        />
+        <Input
           defaultValue={state.fields?.email}
           disabled={disabled}
           errorText={errorText(state.errors?.email)}
-          helperText="Optional"
           id="email"
-          label="Email"
+          label={optionalLabel("Email")}
           name="email"
           type="email"
         />
@@ -104,9 +109,8 @@ export function RefillForm() {
           defaultValue={state.fields?.prescription_number}
           disabled={disabled}
           errorText={errorText(state.errors?.prescription_number)}
-          helperText="Optional"
           id="prescription-number"
-          label="Prescription number"
+          label={optionalLabel("Prescription number")}
           name="prescription_number"
         />
       </div>
@@ -114,9 +118,8 @@ export function RefillForm() {
         defaultValue={state.fields?.medication_name}
         disabled={disabled}
         errorText={errorText(state.errors?.medication_name)}
-        helperText="Optional"
         id="medication-name"
-        label="Medication name"
+        label={optionalLabel("Medication name")}
         name="medication_name"
       />
       <Select
@@ -124,7 +127,7 @@ export function RefillForm() {
         disabled={disabled}
         errorText={errorText(state.errors?.fulfillment_preference)}
         id="pickup-delivery"
-        label={requiredLabel("Pickup or delivery preference")}
+        label={optionalLabel("Pickup or delivery preference")}
         name="fulfillment_preference"
       >
         <option value="pickup">Pickup at pharmacy</option>
@@ -135,34 +138,16 @@ export function RefillForm() {
         disabled={disabled}
         errorText={errorText(state.errors?.file)}
         name="prescription_file"
-        title="Attach prescription photo"
+        title="Add attachment (optional)"
       />
       <Textarea
         defaultValue={state.fields?.notes}
         disabled={disabled}
         errorText={errorText(state.errors?.notes)}
-        helperText="Optional"
         id="notes"
-        label="Notes for the pharmacy"
+        label={optionalLabel("Notes for the pharmacy")}
         name="notes"
       />
-      <label className="flex gap-3 rounded-[22px] border border-white/70 bg-primary-soft/55 p-5 text-sm leading-7 text-muted shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] ring-1 ring-border/45">
-        <input
-          className="mt-1 size-5 accent-primary disabled:cursor-not-allowed"
-          disabled={disabled}
-          name="consent_given"
-          type="checkbox"
-        />
-        <span>
-          I understand this is a refill request only. The pharmacy may contact
-          me before preparing or dispensing medication.
-        </span>
-      </label>
-      {state.errors?.consent_given ? (
-        <p className="text-sm leading-6 text-[#9f3432]">
-          {errorText(state.errors.consent_given)}
-        </p>
-      ) : null}
       <SubmitButton disabled={disabled} />
     </form>
   );

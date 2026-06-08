@@ -78,8 +78,10 @@ export type EditableService = {
   id: string;
   title: string;
   slug: string;
+  description: string | null;
   short_description: string | null;
   long_description: string | null;
+  checklist_items: string | null;
   icon_name: string | null;
   is_featured: boolean;
   display_order: number;
@@ -105,6 +107,7 @@ export type EditablePharmacySettings = {
   province: string | null;
   postal_code: string | null;
   google_maps_url: string | null;
+  google_maps_embed_url: string | null;
   homepage_announcement: string | null;
   delivery_note: string | null;
   updated_at: string;
@@ -355,6 +358,7 @@ function fallbackSettings(): EditablePharmacySettings {
     delivery_note: "Ask us about delivery availability for your area.",
     email: pharmacyContact.email,
     fax: pharmacyContact.fax,
+    google_maps_embed_url: null,
     google_maps_url: null,
     homepage_announcement: null,
     id: "fallback-settings",

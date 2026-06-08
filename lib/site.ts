@@ -7,16 +7,15 @@ export const siteNavItems: NavItem[] = [
   { label: "Refill", href: "/refill" },
   { label: "Patient Info", href: "/patient-information" },
   { label: "Contact", href: "/contact" },
-  { label: "Location", href: "/location" },
 ];
 
 export const pharmacyContact = {
   name: "Terra Losa Pharmacy",
-  address: "Placeholder address, Edmonton, AB",
+  address: "17314 99 Ave NW, Edmonton, AB, T5T 5L5",
   phone: "(587) 462-1500",
   phoneHref: "+15874621500",
-  fax: "(780) 000-0001",
-  email: "hello@terralosapharmacy.ca",
+  fax: "(587) 462-1700",
+  email: "terralosapharmacy@gmail.com",
   hours: "Monday to Friday, 9:00 AM - 6:00 PM",
   shortHours: "Mon-Fri, 9 AM - 6 PM",
 };

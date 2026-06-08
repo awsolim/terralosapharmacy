@@ -107,6 +107,51 @@ function RefillIcon() {
   );
 }
 
+function MapPinIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="size-5"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M12 21s7-4.6 7-11a7 7 0 1 0-14 0c0 6.4 7 11 7 11Z"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+      />
+      <path
+        d="M12 10.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+      />
+    </svg>
+  );
+}
+
+function PhoneActionIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="size-5"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+      />
+    </svg>
+  );
+}
+
 function CheckIcon() {
   return (
     <svg
@@ -230,6 +275,12 @@ export default async function HomePage() {
   const servicesIntro = content.sections.get("services_intro");
   const patientInfo = content.sections.get("patient_info_callout");
   const finalCta = content.sections.get("final_cta");
+  const directionsHref = textOrFallback(
+    content.settings.google_maps_url,
+    "https://www.google.com/maps/search/?api=1&query=17314%2099%20Ave%20NW%20Edmonton%20AB%20T5T%205L5",
+  );
+  const phoneLabel = textOrFallback(content.settings.phone, "(587) 462-1500");
+  const phoneHref = `tel:${phoneLabel.replace(/[^\d+]/g, "")}`;
   const heroTitle = textOrFallback(
     hero?.title,
     "Personal pharmacy care, close to home.",
@@ -357,7 +408,7 @@ export default async function HomePage() {
             </div>
           </div>
           <div className="max-w-2xl">
-            <h2 className="font-serif text-[clamp(2rem,4vw,3.5rem)] font-semibold leading-tight text-foreground">
+            <h2 className="text-[clamp(2rem,4vw,3.5rem)] font-extrabold leading-tight text-foreground">
               {textOrFallback(localCare?.title, "Skip the Doctor's Office. Walk Right In.")}
             </h2>
             <p className="mt-5 text-base leading-8 text-muted">
@@ -434,7 +485,7 @@ export default async function HomePage() {
                 <span key={`${star}-${index}`}>{star}</span>
               ))}
             </div>
-            <h2 className="mt-4 font-serif text-[clamp(2.25rem,4vw,4.25rem)] font-semibold leading-tight text-foreground">
+            <h2 className="mt-4 text-[clamp(2.25rem,4vw,4.25rem)] font-extrabold leading-tight text-foreground">
               4.9 stars on Google
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-muted sm:text-lg">
@@ -494,7 +545,7 @@ export default async function HomePage() {
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-white/72">
               {textOrFallback(patientInfo?.eyebrow, "Patient & regulatory information")}
             </p>
-            <h2 className="mt-4 font-serif text-[clamp(2.25rem,4.5vw,4.25rem)] font-semibold leading-tight">
+            <h2 className="mt-4 text-[clamp(2.25rem,4.5vw,4.25rem)] font-extrabold leading-tight">
               {textOrFallback(patientInfo?.title, "Patient & Regulatory Information")}
             </h2>
             <p className="mt-5 max-w-xl text-base leading-8 text-white/84 sm:text-lg">
@@ -519,37 +570,49 @@ export default async function HomePage() {
       </section>
 
       {finalCta?.is_active !== false ? (
-        <section className="w-full bg-surface px-5 py-[clamp(3rem,5vw,4rem)] sm:px-6 lg:px-8">
-          <div className="mx-auto flex w-full max-w-[82rem] flex-col gap-5 rounded-[24px] border border-border/70 bg-white/82 p-6 shadow-[var(--shadow-soft)] sm:p-7 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.16em] text-awning">
+        <section className="w-full bg-background px-5 py-[clamp(3.5rem,6vw,5.5rem)] sm:px-6 lg:px-8">
+          <div className="mx-auto grid w-full max-w-[82rem] gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+            <div className="max-w-3xl">
+              <p className="text-sm font-bold uppercase tracking-[0.18em] text-awning">
                 {textOrFallback(finalCta?.eyebrow, "Need help today?")}
               </p>
-              <h2 className="mt-3 font-serif text-[clamp(2rem,3vw,3rem)] font-semibold text-foreground">
+              <h2 className="mt-4 max-w-3xl text-[clamp(2.75rem,5vw,5.75rem)] font-extrabold leading-[0.95] text-foreground">
                 {textOrFallback(finalCta?.title, "Personal pharmacy care, close to home.")}
               </h2>
-              <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
+              <p className="mt-5 max-w-2xl text-base leading-8 text-muted sm:text-lg">
                 {textOrFallback(
                   finalCta?.subtitle ?? finalCta?.body,
                   "Call or send a request and the Terra Losa Pharmacy team will help with the next step.",
                 )}
               </p>
             </div>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-col gap-3 lg:justify-end">
               <Link
-                className={buttonStyles({ variant: "primary", size: "md" })}
-                href={textOrFallback(finalCta?.button_href, "/refill")}
+                className={buttonStyles({
+                  variant: "primary",
+                  size: "lg",
+                  className:
+                    "min-h-16 rounded-[10px] px-8 text-base sm:min-w-[13rem]",
+                })}
+                href={directionsHref}
+                rel="noreferrer"
+                target="_blank"
               >
-                {textOrFallback(finalCta?.button_label, "Refill prescription")}
+                <MapPinIcon />
+                Get directions
               </Link>
-              {finalCta?.secondary_button_href ? (
-                <Link
-                  className={buttonStyles({ variant: "outline", size: "md" })}
-                  href={finalCta.secondary_button_href}
-                >
-                  {textOrFallback(finalCta.secondary_button_label, "Contact us")}
-                </Link>
-              ) : null}
+              <Link
+                className={buttonStyles({
+                  variant: "outline",
+                  size: "lg",
+                  className:
+                    "min-h-16 rounded-[10px] px-8 text-base sm:min-w-[13rem]",
+                })}
+                href={phoneHref}
+              >
+                <PhoneActionIcon />
+                {phoneLabel}
+              </Link>
             </div>
           </div>
         </section>

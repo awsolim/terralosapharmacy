@@ -66,7 +66,14 @@ export default async function RefillRequestDetailPage({
             Request details
           </h2>
           <dl className="mt-5 grid gap-4 sm:grid-cols-2">
-            <Detail label="Date of birth" value={formatDate(request.date_of_birth)} />
+            <Detail
+              label="Date of birth"
+              value={
+                request.date_of_birth
+                  ? formatDate(request.date_of_birth)
+                  : "Not provided"
+              }
+            />
             <Detail label="Phone" value={request.phone} />
             <Detail label="Email" value={request.email || "Not provided"} />
             <Detail

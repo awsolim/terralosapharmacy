@@ -22,7 +22,7 @@ export async function Footer() {
                 <Image alt="" className="object-contain p-1.5" fill sizes="48px" src="/images/logo.jpg" />
               </span>
               <div>
-                <p className="font-serif text-2xl font-semibold">
+                <p className="text-2xl font-extrabold">
                   {content.settings.pharmacy_name}
                 </p>
                 <p className="text-sm font-semibold uppercase tracking-[0.14em] text-awning">
@@ -30,7 +30,7 @@ export async function Footer() {
                 </p>
               </div>
             </div>
-            <p className="mt-4 max-w-md font-serif text-xl font-semibold leading-tight text-foreground">
+            <p className="mt-4 max-w-md text-xl font-extrabold leading-tight text-foreground">
               Personal care, close to home.
             </p>
             <p className="mt-3 max-w-md text-sm leading-7 text-muted">
@@ -78,7 +78,6 @@ export async function Footer() {
               <Link className="hover:text-awning" href="/refill">Refill</Link>
               <Link className="hover:text-awning" href="/patient-information">Patient & Regulatory Information</Link>
               <Link className="hover:text-awning" href="/contact">Contact</Link>
-              <Link className="hover:text-awning" href="/location">Location</Link>
               <Link className="hover:text-awning" href="/privacy">
                 Privacy
               </Link>

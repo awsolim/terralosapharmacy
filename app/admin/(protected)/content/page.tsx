@@ -122,6 +122,7 @@ export default async function AdminContentPage() {
             <Input defaultValue={content.settings.province ?? ""} id="province" label="Province" name="province" />
             <Input defaultValue={content.settings.postal_code ?? ""} id="postal_code" label="Postal code" name="postal_code" />
             <Input defaultValue={content.settings.google_maps_url ?? ""} id="google_maps_url" label="Google Maps URL" name="google_maps_url" />
+            <Input defaultValue={content.settings.google_maps_embed_url ?? ""} id="google_maps_embed_url" label="Google Maps embed URL" name="google_maps_embed_url" />
           </div>
           <Textarea defaultValue={content.settings.homepage_announcement ?? ""} id="homepage_announcement" label="Homepage announcement" name="homepage_announcement" />
           <Textarea defaultValue={content.settings.delivery_note ?? ""} id="delivery_note" label="Delivery note" name="delivery_note" />
@@ -240,7 +241,7 @@ function ServiceFields({ service }: { service?: EditableService }) {
       <div className="mt-4 grid gap-4 md:grid-cols-2">
         <Input defaultValue={service?.title ?? ""} id={`${service?.id ?? "new"}-service-title`} label="Title" name="title" />
         <Input defaultValue={service?.slug ?? ""} id={`${service?.id ?? "new"}-service-slug`} label="Slug" name="slug" />
-        <Input defaultValue={service?.short_description ?? ""} id={`${service?.id ?? "new"}-service-short`} label="Short description" name="short_description" />
+        <Input defaultValue={service?.description ?? service?.short_description ?? ""} id={`${service?.id ?? "new"}-service-description`} label="Description" name="description" />
         <Input defaultValue={service?.icon_name ?? ""} id={`${service?.id ?? "new"}-service-icon`} label="Icon name" name="icon_name" />
         <Input defaultValue={service?.display_order ?? 100} id={`${service?.id ?? "new"}-service-order`} label="Display order" name="display_order" type="number" />
         <div className="grid content-end gap-2 sm:grid-cols-2">
@@ -248,6 +249,13 @@ function ServiceFields({ service }: { service?: EditableService }) {
           <Checkbox defaultChecked={service?.is_active ?? true} label="Active" name="is_active" />
         </div>
       </div>
+      <Textarea
+        className="mt-4"
+        defaultValue={service?.checklist_items ?? ""}
+        id={`${service?.id ?? "new"}-service-checklist`}
+        label="Checklist items (comma separated)"
+        name="checklist_items"
+      />
       <Textarea className="mt-4" defaultValue={service?.long_description ?? ""} id={`${service?.id ?? "new"}-service-long`} label="Long description" name="long_description" />
       <Button className="mt-4" type="submit">{service ? "Save service" : "Add service"}</Button>
     </form>

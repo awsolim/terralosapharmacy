@@ -8,7 +8,6 @@ const publicPaths = [
   "/",
   "/about",
   "/services",
-  "/location",
   "/patient-information",
   "/patient-info",
   "/privacy",
@@ -22,6 +21,27 @@ function text(formData: FormData, key: string) {
   }
   const trimmed = value.trim();
   return trimmed ? trimmed : null;
+}
+
+function googleMapsEmbedUrl(formData: FormData) {
+  const raw = text(formData, "google_maps_embed_url");
+  if (!raw) {
+    return null;
+  }
+
+  const iframeSrc = raw.match(/\bsrc=["']([^"']+)["']/i)?.[1];
+  const value = iframeSrc ?? raw;
+
+  try {
+    const url = new URL(value);
+    const isGoogleMaps =
+      (url.hostname === "www.google.com" || url.hostname === "maps.google.com") &&
+      url.pathname.startsWith("/maps/");
+
+    return isGoogleMaps ? url.toString() : null;
+  } catch {
+    return null;
+  }
 }
 
 function requiredText(formData: FormData, key: string) {
@@ -112,6 +132,7 @@ export async function updatePharmacySettingsAction(formData: FormData) {
       delivery_note: text(formData, "delivery_note"),
       email: text(formData, "email"),
       fax: text(formData, "fax"),
+      google_maps_embed_url: googleMapsEmbedUrl(formData),
       google_maps_url: text(formData, "google_maps_url"),
       homepage_announcement: text(formData, "homepage_announcement"),
       pharmacy_name: requiredText(formData, "pharmacy_name") || "Terra Losa Pharmacy",
@@ -147,13 +168,16 @@ export async function upsertServiceAction(formData: FormData) {
   const id = text(formData, "id");
   const title = requiredText(formData, "title");
   if (!title) return;
+  const description = text(formData, "description");
   const payload = {
+    description,
     display_order: intValue(formData, "display_order", 100),
+    checklist_items: text(formData, "checklist_items"),
     icon_name: text(formData, "icon_name"),
     is_active: checked(formData, "is_active"),
     is_featured: checked(formData, "is_featured"),
     long_description: text(formData, "long_description"),
-    short_description: text(formData, "short_description"),
+    short_description: description,
     slug: text(formData, "slug") || slugify(title),
     title,
   };
